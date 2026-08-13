@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deploying a Static Site to Cloudflare Pages — Asadaani</title>
+<meta name="description" content="A 10-minute walkthrough for getting a lightweight HTML/CSS site live on Cloudflare Pages for free.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="index.html" class="brand"><span class="dot"></span> Asadaani</a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="articles.html" class="active">Articles</a></li>
+        <li><a href="reviews.html">Hosting Reviews</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="reviews.html" class="btn btn-primary btn-sm">Best Hosting 2026</a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<section class="article-hero">
+  <div class="wrap">
+    <div class="meta">TECH NOTES · Aug 2026 · 6 min read</div>
+    <h1>Deploying a static site to Cloudflare Pages: the 10-minute setup</h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap prose">
+    <p>If your site is plain HTML, CSS, and a little JavaScript — like this one — Cloudflare Pages is the fastest way to get it live for free, with a global CDN and automatic HTTPS out of the box.</p>
+
+    <h2>Option A: drag-and-drop deploy (fastest)</h2>
+    <ol>
+      <li>Sign in to the Cloudflare dashboard and open the <strong>Workers &amp; Pages</strong> section.</li>
+      <li>Choose <strong>Create application → Pages → Upload assets</strong>.</li>
+      <li>Drag your site folder in (the one containing <code>index.html</code>) and confirm.</li>
+      <li>Cloudflare gives you a live <code>*.pages.dev</code> URL within seconds.</li>
+    </ol>
+
+    <h2>Option B: connect a Git repository (best for ongoing updates)</h2>
+    <ol>
+      <li>Push your site folder to a GitHub or GitLab repository.</li>
+      <li>In Cloudflare Pages, choose <strong>Create application → Pages → Connect to Git</strong>.</li>
+      <li>Select the repo. Since this is a plain static site, leave the build command empty and set the output directory to <code>/</code> (the project root).</li>
+      <li>Every future push to your main branch redeploys automatically.</li>
+    </ol>
+
+    <h2>Connecting your own domain</h2>
+    <p>Once the site is live on a <code>*.pages.dev</code> address, go to your Pages project's <strong>Custom domains</strong> tab and add your domain. If the domain's DNS is already on Cloudflare, this is usually a one-click step; otherwise you'll add a CNAME record pointing to your Pages project.</p>
+
+    <blockquote>Keep the site "light" on purpose: no build step, no framework, no database. Fewer moving parts means fewer things that can break on a free static host.</blockquote>
+
+    <h2>A few things worth doing before you launch</h2>
+    <ul>
+      <li>Add a proper <code>404.html</code> so broken links don't dead-end visitors.</li>
+      <li>Compress images before uploading — Cloudflare Pages doesn't optimize them for you.</li>
+      <li>Set up Cloudflare's free Web Analytics instead of a heavier tracking script.</li>
+      <li>Double check every affiliate link works and opens in a way that's clearly disclosed to readers.</li>
+    </ul>
+
+    <hr>
+    <p>That's genuinely the whole setup — no server to manage, no monthly hosting bill for a site this size.</p>
+    <a href="articles.html" class="btn btn-outline">← Back to all articles</a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand"><span class="dot"></span> Asadaani</div>
+        <p>Independent hosting reviews and tech notes. We may earn a commission when you buy through our links — see our <a href="disclosure.html" style="color:var(--mint)">disclosure</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Site</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="articles.html">Articles</a></li>
+          <li><a href="reviews.html">Hosting Reviews</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="disclosure.html">Affiliate Disclosure</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Hosts</h4>
+        <ul>
+          <li><a href="review-hostinger.html">Hostinger review</a></li>
+          <li><a href="reviews.html">Bluehost review</a></li>
+          <li><a href="reviews.html">Hostgator review</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Asadaani. All rights reserved.</span>
+      <span>Built for Cloudflare Pages.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

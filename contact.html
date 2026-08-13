@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Asadaani</title>
+<meta name="description" content="Get in touch with Asadaani.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a href="index.html" class="brand"><span class="dot"></span> Asadaani</a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="articles.html">Articles</a></li>
+        <li><a href="reviews.html">Hosting Reviews</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="reviews.html" class="btn btn-primary btn-sm">Best Hosting 2026</a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">Get in touch</span>
+    <h1>Questions, corrections, or partnership requests</h1>
+    <p>Whether it's a broken link, a suggestion for a review, or something else — send it over.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap two-col">
+    <div>
+      <form class="simple-form" data-contact>
+        <div>
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send message</button>
+        <p id="form-note" style="display:none;font-size:13px;color:var(--slate-light)"></p>
+      </form>
+    </div>
+    <div>
+      <div class="callout">
+        <span>⚠️</span>
+        <span><strong>Heads up:</strong> this form is static HTML — it won't send anywhere until it's connected to a backend. See the README included with this site for two quick options (Cloudflare Pages Functions, or a third-party form service).</span>
+      </div>
+      <div style="margin-top:20px">
+        <h3>Prefer email?</h3>
+        <p>Reach us directly at <a href="mailto:hello@asadaani.com" style="color:var(--indigo);font-weight:700">hello@asadaani.com</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand"><span class="dot"></span> Asadaani</div>
+        <p>Independent hosting reviews and tech notes. We may earn a commission when you buy through our links — see our <a href="disclosure.html" style="color:var(--mint)">disclosure</a>.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Site</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="articles.html">Articles</a></li>
+          <li><a href="reviews.html">Hosting Reviews</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="disclosure.html">Affiliate Disclosure</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Hosts</h4>
+        <ul>
+          <li><a href="review-hostinger.html">Hostinger review</a></li>
+          <li><a href="reviews.html#bluehost">Bluehost review</a></li>
+          <li><a href="reviews.html#hostgator">Hostgator review</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Asadaani. All rights reserved.</span>
+      <span>Built for Cloudflare Pages.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
