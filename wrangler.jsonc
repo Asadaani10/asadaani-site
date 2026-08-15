@@ -1,0 +1,9 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "asadaani-site",
+  "compatibility_date": "2026-08-15",
+  "assets": {
+    "directory": ".",
+    "html_handling": "auto-trailing-slash"
+  }
+}
