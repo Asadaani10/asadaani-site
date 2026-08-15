@@ -125,10 +125,9 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 }
 
 .brand img{
-  height:64px;
+  height:72px;
   width:auto;
   display:block;
-  object-fit:contain;
 }
 .nav-links{
   display:flex;align-items:center;gap:34px;
