@@ -119,15 +119,16 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   height:74px;
 }
 .brand{
-  display:flex;align-items:center;gap:10px;
-  font-family:var(--font-display);
-  font-weight:700;font-size:20px;color:#fff;
+  display:flex;
+  align-items:center;
   text-decoration:none;
 }
-.brand .dot{
-  width:11px;height:11px;border-radius:3px;
-  background:linear-gradient(135deg,var(--coral),var(--indigo));
-  display:inline-block;
+
+.brand img{
+  height:64px;
+  width:auto;
+  display:block;
+  object-fit:contain;
 }
 .nav-links{
   display:flex;align-items:center;gap:34px;
