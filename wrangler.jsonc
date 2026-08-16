@@ -2,8 +2,19 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "asadaani-site",
   "compatibility_date": "2026-08-15",
+  "main": "worker.js",
   "assets": {
     "directory": ".",
+    "binding": "ASSETS",
     "html_handling": "auto-trailing-slash"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "PRICING_KV",
+      "id": "PASTE_YOUR_REAL_KV_ID_HERE"
+    }
+  ],
+  "triggers": {
+    "crons": ["0 6 * * *"]
   }
 }
