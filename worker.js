@@ -84,11 +84,17 @@ function extractPrice(text, anchor, min, max) {
   const idx = text.indexOf(anchor);
   if (idx === -1) return null;
   const windowText = text.slice(idx, idx + 800);
-  const match = windowText.match(/\$(\d{1,3}\.\d{2})\s*\/\s*mo/i);
-  if (!match) return null;
-  const value = parseFloat(match[1]);
-  if (isNaN(value) || value < min || value > max) return null; // sanity range guard
-  return value;
+  // Collect every "$X.XX/mo" in the window rather than just the first match.
+  // Pages don't reliably list the intro price before the renewal price (or
+  // vice versa) — but the intro/discounted rate is always the SMALLER of
+  // the two, so picking the minimum is a more reliable signal than order.
+  const matches = [...windowText.matchAll(/\$(\d{1,3}\.\d{2})\s*\/\s*mo/gi)];
+  if (!matches.length) return null;
+  const values = matches
+    .map((m) => parseFloat(m[1]))
+    .filter((v) => !isNaN(v) && v >= min && v <= max);
+  if (!values.length) return null;
+  return Math.min(...values);
 }
 
 async function refreshHost(host, env) {
