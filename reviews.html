@@ -8,14 +8,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/svg+xml" href="images/icon-badge.svg">
+<link rel="apple-touch-icon" href="images/favicon-180.png">
 </head>
 <body>
 
 <header class="site-header">
   <div class="wrap nav">
-    <a href="index.html" class="brand" aria-label="Asadaani home">
-      <img src="images/logo-horizontal-light.svg" class="brand-logo" alt="Asadaani">
-    </a>
+    <a href="index.html" class="brand"><img src="images/logo-horizontal-light.svg" alt="Asadaani" height="34"></a>
     <nav>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
@@ -71,7 +71,7 @@
         <tbody>
           <tr>
             <td class="host-cell">Hostinger</td>
-            <td class="price-cell">$2.49/mo</td>
+            <td class="price-cell" data-price-id="hostinger"><span data-price-value>$2.49</span>/mo</td>
             <td>$6.99/mo</td>
             <td>100 GB SSD</td>
             <td>210 ms</td>
@@ -81,7 +81,7 @@
           </tr>
           <tr>
             <td class="host-cell">Bluehost</td>
-            <td class="price-cell">$2.95/mo</td>
+            <td class="price-cell" data-price-id="bluehost"><span data-price-value>$2.95</span>/mo</td>
             <td>$10.99/mo</td>
             <td>50 GB SSD</td>
             <td>340 ms</td>
@@ -91,7 +91,7 @@
           </tr>
           <tr>
             <td class="host-cell">Hostgator</td>
-            <td class="price-cell">$2.75/mo</td>
+            <td class="price-cell">$2.75/mo*</td>
             <td>$9.99/mo</td>
             <td>Unmetered SSD</td>
             <td>410 ms</td>
@@ -99,10 +99,42 @@
             <td>Multiple small sites</td>
             <td><a href="#hostgator" class="btn btn-outline btn-sm">Details</a></td>
           </tr>
+          <tr>
+            <td class="host-cell">DreamHost</td>
+            <td class="price-cell" data-price-id="dreamhost"><span data-price-value>$2.89</span>/mo</td>
+            <td>$10.99/mo</td>
+            <td>25 GB NVMe SSD</td>
+            <td>380 ms</td>
+            <td>99.9%</td>
+            <td>Long money-back guarantee</td>
+            <td><a href="#dreamhost" class="btn btn-outline btn-sm">Details</a></td>
+          </tr>
+          <tr>
+            <td class="host-cell">Hosting.com</td>
+            <td class="price-cell" data-price-id="hostingcom"><span data-price-value>$2.99</span>/mo*</td>
+            <td>$11.99/mo</td>
+            <td>SSD storage</td>
+            <td>500 ms</td>
+            <td>99.96%</td>
+            <td>Turbo-speed performance</td>
+            <td><a href="#hostingcom" class="btn btn-outline btn-sm">Details</a></td>
+          </tr>
+          <tr>
+            <td class="host-cell">Namecheap</td>
+            <td class="price-cell" data-price-id="namecheap"><span data-price-value>$2.28</span>/mo</td>
+            <td>$5.88/mo</td>
+            <td>20 GB SSD</td>
+            <td>390 ms</td>
+            <td>99.9%</td>
+            <td>Domains & website services</td>
+            <td><a href="#namecheap" class="btn btn-outline btn-sm">Details</a></td>
+          </tr>
         </tbody>
       </table>
     </div>
-    <p style="font-size:12.5px;color:var(--slate-light);margin-top:14px">Speed and uptime figures are sample benchmark data for this template — replace with your own measured results (e.g. via Pingdom, UptimeRobot, or GTmetrix) before publishing.</p>
+    <p style="font-size:12.5px;color:var(--slate-light);margin-top:14px" data-price-updated-note>Pricing auto-checked daily.</p>
+    <p style="font-size:12.5px;color:var(--slate-light);margin-top:6px">* HostGator's price can't be auto-checked — its pricing page loads the number via JavaScript, which our daily check can't see, so this figure is entered manually. Hosting.com's auto-check is unverified — see <a href="DYNAMIC-PRICING.md">the notes</a> before trusting it.</p>
+    <p style="font-size:12.5px;color:var(--slate-light);margin-top:6px">Speed and uptime figures are sample benchmark data for this template — replace with your own measured results (e.g. via Pingdom, UptimeRobot, or GTmetrix) before publishing.</p>
   </div>
 </section>
 
@@ -114,7 +146,7 @@
         <span class="host-badge">Editor's pick</span>
         <div class="host-top">
           <div><div class="host-name">Hostinger</div><div class="host-stars">★★★★★ 4.8/5</div></div>
-          <div class="host-price">$2.49<span>/mo</span></div>
+          <div class="host-price" data-price-id="hostinger"><span data-price-value>$2.49</span><span>/mo</span></div>
         </div>
         <p style="font-size:13.5px">Consistently the fastest average load time in our tests, with the smallest gap between intro and renewal pricing of the three.</p>
         <ul class="host-list">
@@ -129,7 +161,7 @@
       <div class="host-card" id="bluehost">
         <div class="host-top">
           <div><div class="host-name">Bluehost</div><div class="host-stars">★★★★☆ 4.3/5</div></div>
-          <div class="host-price">$2.95<span>/mo</span></div>
+          <div class="host-price" data-price-id="bluehost"><span data-price-value>$2.95</span><span>/mo</span></div>
         </div>
         <p style="font-size:13.5px">Officially recommended by WordPress.org, with solid onboarding for first-time site owners — but watch the renewal price.</p>
         <ul class="host-list">
@@ -138,13 +170,13 @@
           <li>Renewal price nearly 4x the intro rate</li>
           <li>30-day money-back guarantee</li>
         </ul>
-        <a href="#" class="btn btn-outline btn-block btn-sm">Full review — coming soon</a>
+        <a href="https://bluehost.sjv.io/vnMdNj" class="btn btn-outline btn-block btn-sm" target="_blank" rel="sponsored nofollow noopener">Check Bluehost offer</a>
       </div>
 
       <div class="host-card" id="hostgator">
         <div class="host-top">
           <div><div class="host-name">Hostgator</div><div class="host-stars">★★★★☆ 4.1/5</div></div>
-          <div class="host-price">$2.75<span>/mo</span></div>
+          <div class="host-price">$2.75<span>/mo*</span></div>
         </div>
         <p style="font-size:13.5px">Unmetered storage and a generous 45-day guarantee make it a reasonable pick if you're planning several small sites.</p>
         <ul class="host-list">
@@ -153,7 +185,52 @@
           <li>Slowest average TTFB of the three</li>
           <li>Free migration for one website</li>
         </ul>
-        <a href="#" class="btn btn-outline btn-block btn-sm">Full review — coming soon</a>
+        <a href="https://partners.hostgator.com/gbVAR9" class="btn btn-outline btn-block btn-sm" target="_blank" rel="sponsored nofollow noopener">Check HostGator offer</a>
+      </div>
+
+      <div class="host-card" id="dreamhost">
+        <div class="host-top">
+          <div><div class="host-name">DreamHost</div><div class="host-stars">Web &amp; WordPress hosting</div></div>
+          <div class="host-price" data-price-id="dreamhost"><span data-price-value>$2.89</span><span>/mo</span></div>
+        </div>
+        <p style="font-size:13.5px">One of the longest money-back windows in the industry, with NVMe storage and a clean renewal disclosure right on the plan card.</p>
+        <ul class="host-list">
+          <li>97-day money-back guarantee</li>
+          <li>NVMe SSD storage</li>
+          <li>Free domain for the first year</li>
+          <li>Renewal rate shown upfront, no digging</li>
+        </ul>
+        <a href="https://click.dreamhost.com/aff_c?offer_id=8&aff_id=6719&url_id=145" class="btn btn-outline btn-block btn-sm" target="_blank" rel="sponsored nofollow noopener">Check DreamHost offer</a>
+      </div>
+
+      <div class="host-card" id="hostingcom">
+        <div class="host-top">
+          <div><div class="host-name">Hosting.com</div><div class="host-stars">Performance-oriented hosting</div></div>
+          <div class="host-price" data-price-id="hostingcom"><span data-price-value>$2.99</span><span>/mo*</span></div>
+        </div>
+        <p style="font-size:13.5px">Positions itself on raw speed ("Turbo Servers"), with a steeper renewal jump worth checking before you commit to a term.</p>
+        <ul class="host-list">
+          <li>Performance-tuned shared hosting</li>
+          <li>Daily backups included</li>
+          <li>Free domain registration</li>
+          <li>Renewal price about 4x the intro rate</li>
+        </ul>
+        <a href="https://hosting.com/?aid=gorfeeyegate&bid=75dbf1c0" class="btn btn-outline btn-block btn-sm" target="_blank" rel="sponsored nofollow noopener">Check Hosting.com offer</a>
+      </div>
+
+      <div class="host-card" id="namecheap">
+        <div class="host-top">
+          <div><div class="host-name">Namecheap</div><div class="host-stars">Domains &amp; website services</div></div>
+          <div class="host-price" data-price-id="namecheap"><span data-price-value>$2.28</span><span>/mo</span></div>
+        </div>
+        <p style="font-size:13.5px">Best known for domains, but its Stellar shared hosting is competitively priced with a straightforward 30-day trial.</p>
+        <ul class="host-list">
+          <li>30-day free trial on all shared plans</li>
+          <li>Free SSL and domain privacy included</li>
+          <li>cPanel-based, beginner-friendly</li>
+          <li>Good pairing if you register your domain here too</li>
+        </ul>
+        <a href="https://namecheap.pxf.io/kj6bvN" class="btn btn-outline btn-block btn-sm" target="_blank" rel="sponsored nofollow noopener">Check Namecheap offer</a>
       </div>
     </div>
   </div>
@@ -178,9 +255,7 @@
   <div class="wrap">
     <div class="footer-grid">
       <div>
-        <div class="footer-brand">
-          <img src="images/logo-horizontal-light.svg" class="footer-logo" alt="Asadaani">
-        </div>
+        <div class="footer-brand"><img src="images/logo-horizontal-light.svg" alt="Asadaani" height="28"></div>
         <p>Independent hosting reviews and tech notes. We may earn a commission when you buy through our links — see our <a href="disclosure.html" style="color:var(--mint)">disclosure</a>.</p>
       </div>
       <div class="footer-col">
@@ -219,5 +294,6 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script src="js/pricing.js"></script>
 </body>
 </html>

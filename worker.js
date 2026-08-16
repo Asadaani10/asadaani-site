@@ -8,6 +8,13 @@
 // and time-limited promos, and can shift at any time. This scraper is built
 // to fail safely: if a page's layout changes or a price looks implausible,
 // we keep the last known-good value instead of showing something wrong.
+//
+// Also: not every host's price is even obtainable this way. HostGator's
+// pricing page renders "$X.XX/mo" as literal placeholder text server-side,
+// with the real number filled in afterward by client-side JavaScript — a
+// plain fetch() like this Worker does will never see it. That's why
+// HostGator isn't in the HOSTS list below; its price on the site is a
+// manually-maintained static value instead.
 
 const HOSTS = [
   {
@@ -27,16 +34,37 @@ const HOSTS = [
     max: 50
   },
   {
-    id: "hostgator",
-    name: "HostGator",
-    url: "https://www.hostgator.com/web-hosting",
-    anchor: "Hatchling",
+    id: "dreamhost",
+    name: "DreamHost",
+    url: "https://www.dreamhost.com/pricing/",
+    anchor: "Web Hosting Launch",
+    min: 0.5,
+    max: 50
+  },
+  {
+    id: "namecheap",
+    name: "Namecheap",
+    url: "https://www.namecheap.com/hosting/shared/",
+    anchor: "Stellar",
+    min: 0.5,
+    max: 50
+  },
+  {
+    id: "hostingcom",
+    name: "Hosting.com",
+    url: "https://hosting.com/web-hosting/",
+    anchor: "Starter",
     min: 0.5,
     max: 50,
-    // Not yet verified against live markup the way Hostinger/Bluehost were.
-    // Check the first scheduled run's KV output before trusting this one.
+    // Anchor/URL are a best guess from third-party sources, not confirmed
+    // against Hosting.com's live markup the way the others above were.
     unverified: true
   }
+  // HostGator intentionally excluded: confirmed (by fetching the live page)
+  // that its price is rendered as literal "$X.XX/mo" placeholder text and
+  // filled in client-side by JavaScript. A server-side fetch never sees a
+  // real number, so scraping it would only ever fail. Its price on the site
+  // stays as a manually-entered static value instead — see reviews.html.
 ];
 
 // Replace tags with a SPACE (not empty string). This matters: if two

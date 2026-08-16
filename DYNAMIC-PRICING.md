@@ -1,21 +1,37 @@
 # Dynamic pricing — deployment guide
 
-This adds a daily-refreshed pricing snapshot for Hostinger, Bluehost, and
-HostGator to `reviews.html`, using your existing Cloudflare Worker.
+This adds a daily-refreshed pricing snapshot to `reviews.html`, covering all
+6 hosts now shown there (Hostinger, Bluehost, HostGator, DreamHost,
+Hosting.com, Namecheap), using your existing Cloudflare Worker.
+
+## Per-host status
+
+Based on actually fetching each host's live pricing page, not just assuming:
+
+| Host | Status |
+|---|---|
+| Hostinger | ✅ Verified — server-rendered, scraped daily |
+| Bluehost | ✅ Verified — server-rendered, scraped daily |
+| DreamHost | ✅ Verified — server-rendered, scraped daily |
+| Namecheap | ✅ Verified — server-rendered, scraped daily |
+| Hosting.com | ⚠️ Best-guess anchor ("Starter"), page structure not confirmed — watch its first few runs before trusting it |
+| **HostGator** | ❌ **Not scraped at all.** Its pricing page renders `$X.XX/mo` as literal placeholder text server-side; the real number is filled in afterward by client-side JavaScript, which a plain server-side fetch never runs — no anchor tweak fixes this. Its price on the site (marked with `*`) is a manually-entered static value instead of a fake "live" one. |
 
 ## What was added
 
 - `worker.js` — replaces the plain static-assets Worker. It still serves your
   site exactly as before, but now also:
-  - answers `GET /api/pricing` with the latest known price for each host
+  - answers `GET /api/pricing` with the latest known price for each of the
+    5 scrapable hosts
   - runs a scheduled job once a day that re-checks each host's pricing page
 - `js/pricing.js` — runs in the browser, fetches `/api/pricing`, and updates
-  any element tagged `data-price-id` on the page. If the fetch fails or a
-  host has no data yet, the static price already in the HTML is left as-is.
-- `reviews.html` — the three "Starting price" table cells and three host-card
-  prices now carry `data-price-id="hostinger|bluehost|hostgator"`.
+  any element tagged `data-price-id`. If the fetch fails, or a host has no
+  data (like HostGator, which is intentionally excluded), the static price
+  already in the HTML is left as-is.
+- `reviews.html` — the comparison table and host cards now cover all 6
+  hosts, with `data-price-id` on the 5 that get auto-checked.
 - `wrangler.toml` — now points to `worker.js`, adds a KV namespace binding
-  (`PRICING_KV`) for storing the daily snapshot, and a cron trigger.
+  (`PRICING_KV`), and a cron trigger.
 
 ## Why this isn't literally "live per visitor" data
 
@@ -31,11 +47,6 @@ reliable and fast, with a visible "Pricing auto-checked daily — last checked
 If a scrape ever fails (a host redesigns their page, changes wording, etc.),
 the Worker keeps showing the last successful price rather than a blank or
 broken one — check the `ok` / `lastError` fields in the KV entry to see why.
-
-**Heads up on HostGator specifically:** its scraper config (`worker.js`,
-`unverified: true`) hasn't been checked against HostGator's live page markup
-yet, unlike Hostinger and Bluehost. Watch its first few scheduled runs (see
-"Checking it worked" below) before trusting that number.
 
 ## Deployment steps
 
