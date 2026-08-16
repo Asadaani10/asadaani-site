@@ -11,7 +11,7 @@ binding = "ASSETS"
 # Storage > KV > Create namespace > name it "asadaani-pricing"
 [[kv_namespaces]]
 binding = "PRICING_KV"
-id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+id = "426d0f24d9214c14ac84ffe14d47b8ab"
 
 # Runs the price-refresh job daily at 06:00 UTC.
 [triggers]
