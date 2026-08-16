@@ -11,7 +11,7 @@
   "kv_namespaces": [
     {
       "binding": "PRICING_KV",
-      "id": "PASTE_YOUR_REAL_KV_ID_HERE"
+      "id": "426d0f24d9214c14ac84ffe14d47b8ab"
     }
   ],
   "triggers": {
