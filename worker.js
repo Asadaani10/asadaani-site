@@ -84,15 +84,30 @@ function extractPrice(text, anchor, min, max) {
   const idx = text.indexOf(anchor);
   if (idx === -1) return null;
   const windowText = text.slice(idx, idx + 800);
-  // Collect every "$X.XX/mo" in the window rather than just the first match.
-  // Pages don't reliably list the intro price before the renewal price (or
-  // vice versa) — but the intro/discounted rate is always the SMALLER of
-  // the two, so picking the minimum is a more reliable signal than order.
-  const matches = [...windowText.matchAll(/\$(\d{1,3}\.\d{2})\s*\/\s*mo/gi)];
-  if (!matches.length) return null;
-  const values = matches
-    .map((m) => parseFloat(m[1]))
+
+  const candidates = [];
+
+  // Pattern A: a price already written per month, e.g. "$2.95/mo"
+  for (const m of windowText.matchAll(/\$(\d{1,3}\.\d{2})\s*\/\s*mo/gi)) {
+    candidates.push(parseFloat(m[1]));
+  }
+
+  // Pattern B: a total contract price + term length, with no "/mo" figure
+  // at all for the discounted rate — e.g. Hostinger writes
+  // "Get 48 months for $143.52" instead of "$2.99/mo". Compute it ourselves.
+  for (const m of windowText.matchAll(/(\d{1,2})\s*months?\s*for\s*\$(\d{1,4}\.\d{2})/gi)) {
+    const months = parseInt(m[1], 10);
+    const total = parseFloat(m[2]);
+    if (months > 0) candidates.push(total / months);
+  }
+
+  // Multiple patterns can surface both the intro rate and the renewal
+  // rate in the same window — the intro/discounted rate is always the
+  // smaller number, so take the minimum of everything found.
+  const values = candidates
+    .map((v) => Math.round(v * 100) / 100)
     .filter((v) => !isNaN(v) && v >= min && v <= max);
+
   if (!values.length) return null;
   return Math.min(...values);
 }
