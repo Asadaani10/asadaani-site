@@ -18,10 +18,10 @@
     <a href="index.html" class="brand"><img src="images/logo-horizontal-light.svg" alt="Asadaani" height="34"></a>
     <nav>
       <ul class="nav-links">
-        <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="reviews.html">Hosting Reviews</a></li>
+        <li><a href="index.html">Home</a></li>
         <li><a href="articles.html">Articles</a></li>
+        <li><a href="reviews.html" class="active">Hosting Reviews</a></li>
+        <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
@@ -81,7 +81,7 @@
           </tr>
           <tr>
             <td class="host-cell">Bluehost</td>
-            <td class="price-cell" data-price-id="bluehost"><span data-price-value>$2.95</span>/mo</td>
+            <td class="price-cell">$2.95/mo*</td>
             <td>$10.99/mo</td>
             <td>50 GB SSD</td>
             <td>340 ms</td>
@@ -111,7 +111,7 @@
           </tr>
           <tr>
             <td class="host-cell">Hosting.com</td>
-            <td class="price-cell" data-price-id="hostingcom"><span data-price-value>$2.99</span>/mo*</td>
+            <td class="price-cell">$2.99/mo*</td>
             <td>$11.99/mo</td>
             <td>SSD storage</td>
             <td>500 ms</td>
@@ -121,7 +121,7 @@
           </tr>
           <tr>
             <td class="host-cell">Namecheap</td>
-            <td class="price-cell" data-price-id="namecheap"><span data-price-value>$2.28</span>/mo</td>
+            <td class="price-cell">$2.28/mo*</td>
             <td>$5.88/mo</td>
             <td>20 GB SSD</td>
             <td>390 ms</td>
@@ -132,7 +132,9 @@
         </tbody>
       </table>
     </div>
-    <p style="font-size:12.5px;color:var(--slate-light);margin-top:6px"><strong>Notice:</strong> Hosting prices are reviewed regularly and may change without notice. Some prices may be updated manually. Speed and uptime figures are provided for general comparison only and may vary by location, hosting plan, website configuration, and testing conditions.</p>
+    <p style="font-size:12.5px;color:var(--slate-light);margin-top:14px" data-price-updated-note>Pricing auto-checked daily.</p>
+    <p style="font-size:12.5px;color:var(--slate-light);margin-top:6px">* Bluehost, HostGator, Hosting.com, and Namecheap prices are entered manually, not auto-checked — Bluehost and Namecheap actively block automated price checks, HostGator's price loads via JavaScript our check can't see, and Hosting.com's page structure isn't confirmed. Hostinger and DreamHost are verified and auto-checked daily.</p>
+    <p style="font-size:12.5px;color:var(--slate-light);margin-top:6px">Speed and uptime figures are sample benchmark data for this template — replace with your own measured results (e.g. via Pingdom, UptimeRobot, or GTmetrix) before publishing.</p>
   </div>
 </section>
 
@@ -159,7 +161,7 @@
       <div class="host-card" id="bluehost">
         <div class="host-top">
           <div><div class="host-name">Bluehost</div><div class="host-stars">★★★★☆ 4.3/5</div></div>
-          <div class="host-price" data-price-id="bluehost"><span data-price-value>$2.95</span><span>/mo</span></div>
+          <div class="host-price">$2.95<span>/mo*</span></div>
         </div>
         <p style="font-size:13.5px">Officially recommended by WordPress.org, with solid onboarding for first-time site owners — but watch the renewal price.</p>
         <ul class="host-list">
@@ -204,7 +206,7 @@
       <div class="host-card" id="hostingcom">
         <div class="host-top">
           <div><div class="host-name">Hosting.com</div><div class="host-stars">Performance-oriented hosting</div></div>
-          <div class="host-price" data-price-id="hostingcom"><span data-price-value>$2.99</span><span>/mo*</span></div>
+          <div class="host-price">$2.99<span>/mo*</span></div>
         </div>
         <p style="font-size:13.5px">Positions itself on raw speed ("Turbo Servers"), with a steeper renewal jump worth checking before you commit to a term.</p>
         <ul class="host-list">
@@ -219,7 +221,7 @@
       <div class="host-card" id="namecheap">
         <div class="host-top">
           <div><div class="host-name">Namecheap</div><div class="host-stars">Domains &amp; website services</div></div>
-          <div class="host-price" data-price-id="namecheap"><span data-price-value>$2.28</span><span>/mo</span></div>
+          <div class="host-price">$2.28<span>/mo*</span></div>
         </div>
         <p style="font-size:13.5px">Best known for domains, but its Stellar shared hosting is competitively priced with a straightforward 30-day trial.</p>
         <ul class="host-list">
@@ -286,6 +288,7 @@
     </div>
     <div class="footer-bottom">
       <span>© 2026 Asadaani. All rights reserved.</span>
+      <span>Hosted on Cloudflare.</span>
     </div>
   </div>
 </footer>

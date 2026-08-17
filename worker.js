@@ -9,12 +9,19 @@
 // to fail safely: if a page's layout changes or a price looks implausible,
 // we keep the last known-good value instead of showing something wrong.
 //
-// Also: not every host's price is even obtainable this way. HostGator's
-// pricing page renders "$X.XX/mo" as literal placeholder text server-side,
-// with the real number filled in afterward by client-side JavaScript — a
-// plain fetch() like this Worker does will never see it. That's why
-// HostGator isn't in the HOSTS list below; its price on the site is a
-// manually-maintained static value instead.
+// Only Hostinger and DreamHost are actually scraped. Every other host was
+// tried and removed for a confirmed, specific reason — see reviews.html's
+// footnote and DYNAMIC-PRICING.md for the full status table:
+//   - HostGator: price is filled in by client-side JavaScript; a plain
+//     fetch() never sees it, no matter what the request looks like.
+//   - Bluehost, Namecheap: return HTTP 403 even with realistic browser
+//     headers — their bot protection is very likely blocking on the
+//     request's origin IP range (Cloudflare's), not anything fixable by
+//     changing headers. Not worth escalating into evasive techniques for.
+//   - Hosting.com: no confirmed pricing page structure was found to
+//     scrape from in the first place.
+// Their prices on the site are manually-maintained static values instead
+// of fake "live" ones.
 
 const HOSTS = [
   {
@@ -26,45 +33,13 @@ const HOSTS = [
     max: 50
   },
   {
-    id: "bluehost",
-    name: "Bluehost",
-    url: "https://www.bluehost.com/pricing",
-    anchor: "Starter",
-    min: 0.5,
-    max: 50
-  },
-  {
     id: "dreamhost",
     name: "DreamHost",
     url: "https://www.dreamhost.com/pricing/",
     anchor: "Web Hosting Launch",
     min: 0.5,
     max: 50
-  },
-  {
-    id: "namecheap",
-    name: "Namecheap",
-    url: "https://www.namecheap.com/hosting/shared/",
-    anchor: "Stellar",
-    min: 0.5,
-    max: 50
-  },
-  {
-    id: "hostingcom",
-    name: "Hosting.com",
-    url: "https://hosting.com/web-hosting/",
-    anchor: "Starter",
-    min: 0.5,
-    max: 50,
-    // Anchor/URL are a best guess from third-party sources, not confirmed
-    // against Hosting.com's live markup the way the others above were.
-    unverified: true
   }
-  // HostGator intentionally excluded: confirmed (by fetching the live page)
-  // that its price is rendered as literal "$X.XX/mo" placeholder text and
-  // filled in client-side by JavaScript. A server-side fetch never sees a
-  // real number, so scraping it would only ever fail. Its price on the site
-  // stays as a manually-entered static value instead — see reviews.html.
 ];
 
 // Replace tags with a SPACE (not empty string). This matters: if two
