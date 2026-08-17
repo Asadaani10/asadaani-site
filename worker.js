@@ -117,7 +117,11 @@ async function refreshHost(host, env) {
   const now = new Date().toISOString();
   try {
     const res = await fetch(host.url, {
-      headers: { "User-Agent": "Mozilla/5.0 (compatible; AsadaaniPriceBot/1.0; +https://asadaani.com)" }
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9"
+      }
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const html = await res.text();
