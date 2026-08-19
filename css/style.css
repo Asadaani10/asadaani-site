@@ -177,28 +177,54 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 .hero h1 em{font-style:normal;color:var(--coral)}
 .hero .lede{color:rgba(255,255,255,.72);font-size:17px;max-width:480px}
 .hero-actions{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
-.hero-art{
-  aspect-ratio:1/1;border-radius:24px;
-  background:linear-gradient(150deg,var(--indigo) 0%, var(--navy-soft) 70%);
-  position:relative;overflow:hidden;
+.hero-pick{
+  border-radius:24px;position:relative;overflow:hidden;
   box-shadow:0 30px 60px rgba(0,0,0,.35);
+  background:linear-gradient(150deg,var(--indigo) 0%, var(--navy-soft) 70%);
+  display:flex;flex-direction:column;
 }
-.hero-art::before{
-  content:"";position:absolute;inset:0;
+.hero-pick-glow{
+  position:absolute;inset:0;pointer-events:none;
   background:
-    radial-gradient(circle at 25% 20%, rgba(255,107,74,.55), transparent 40%),
-    radial-gradient(circle at 80% 75%, rgba(20,195,142,.4), transparent 45%);
+    radial-gradient(circle at 25% 15%, rgba(255,107,74,.5), transparent 42%),
+    radial-gradient(circle at 82% 78%, rgba(20,195,142,.38), transparent 48%);
 }
-.hero-art .tag{
-  position:absolute;font-family:var(--font-mono);font-size:12px;
-  background:rgba(18,23,43,.55);backdrop-filter:blur(6px);
-  border:1px solid rgba(255,255,255,.16);
-  color:#fff;padding:8px 12px;border-radius:8px;
+.hero-pick-viewport{position:relative;z-index:2;overflow:hidden}
+.hero-pick-track{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.hero-pick-slide{
+  flex:0 0 100%;min-width:0;box-sizing:border-box;
+  padding:26px;display:flex;flex-direction:column;gap:14px;
+  background:rgba(15,19,38,.42);backdrop-filter:blur(10px);
 }
+.hero-pick-tag{
+  align-self:flex-start;font-family:var(--font-mono);font-size:11px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.75);padding:6px 11px;border-radius:999px;letter-spacing:.03em;
+}
+.hero-pick-host{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.hero-pick-name{font-family:var(--font-display);font-size:22px;font-weight:700;color:#fff}
+.hero-pick .host-stars{font-size:12.5px;color:#ffc94d;margin-top:2px}
+.hero-pick-price{font-family:var(--font-mono);color:#fff;text-align:right;white-space:nowrap}
+.hero-pick-price span:first-child{font-size:22px;font-weight:600}
+.hero-pick-price span:last-child{font-size:12.5px;color:rgba(255,255,255,.6)}
+.hero-pick-note{font-size:13.5px;color:rgba(255,255,255,.72);margin:0;flex:1;min-height:52px}
+.hero-pick-footer{
+  position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;
+  padding:14px 22px;border-top:1px solid rgba(255,255,255,.1);
+  background:rgba(9,12,26,.35);
+}
+.hero-pick-dots{display:flex;gap:6px}
+.hero-pick-dot{
+  width:7px;height:7px;border-radius:999px;border:none;padding:0;
+  background:rgba(255,255,255,.28);cursor:pointer;transition:background .2s ease,width .2s ease;
+}
+.hero-pick-dot.is-active{background:var(--coral);width:18px}
+.hero-pick-link{font-size:12.5px;color:rgba(255,255,255,.65);text-decoration:none}
+.hero-pick-link:hover{color:#fff;text-decoration:underline}
 @media(max-width:860px){
   .hero-grid{grid-template-columns:1fr;padding-bottom:36px}
   .hero h1{font-size:32px}
-  .hero-art{max-width:340px;margin:0 auto}
+  .hero-pick{max-width:340px;margin:0 auto}
 }
 
 /* =========================================================
@@ -209,14 +235,16 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   border-top:1px solid rgba(255,255,255,.08);
 }
 .scoreboard .wrap{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1px;background:rgba(255,255,255,.08);
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 }
 .score-cell{
   background:var(--navy-soft);
   padding:22px 26px;
   display:flex;flex-direction:column;gap:10px;
+  border-right:1px solid rgba(255,255,255,.08);
+  border-bottom:1px solid rgba(255,255,255,.08);
 }
+.score-cell:last-child{border-right:none}
 .score-top{display:flex;justify-content:space-between;align-items:center}
 .score-host{color:#fff;font-weight:700;font-family:var(--font-display);font-size:15px}
 .score-price{font-family:var(--font-mono);color:var(--mint);font-size:13px}
@@ -231,6 +259,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 }
 @media(max-width:860px){
   .scoreboard .wrap{grid-template-columns:1fr}
+  .score-cell{border-right:none}
 }
 
 /* =========================================================
