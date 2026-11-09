@@ -1,51 +1,40 @@
 // Asadaani — Cloudflare Worker
 // Serves the static site as-is, and keeps a small pricing snapshot fresh
-// via a daily scheduled job (see wrangler.toml [triggers]).
+// via a daily scheduled job (see wrangler config [triggers]).
 //
-// IMPORTANT — read this before changing anything below:
-// Hosting companies do not publish a stable, single "current price" number.
-// The figure on their pricing page depends on term length, region/currency,
-// and time-limited promos, and can shift at any time. This scraper is built
-// to fail safely: if a page's layout changes or a price looks implausible,
-// we keep the last known-good value instead of showing something wrong.
-//
-// Only Hostinger and DreamHost are actually scraped. Every other host was
-// tried and removed for a confirmed, specific reason — see reviews.html's
-// footnote and DYNAMIC-PRICING.md for the full status table:
+// Only Hostinger and DreamHost are actually scraped. Other hosts were tried
+// and removed for specific reasons:
 //   - HostGator: price is filled in by client-side JavaScript; a plain
-//     fetch() never sees it, no matter what the request looks like.
-//   - Bluehost, Namecheap: return HTTP 403 even with realistic browser
-//     headers — their bot protection is very likely blocking on the
-//     request's origin IP range (Cloudflare's), not anything fixable by
-//     changing headers. Not worth escalating into evasive techniques for.
-//   - Hosting.com: no confirmed pricing page structure was found to
-//     scrape from in the first place.
-// Their prices on the site are manually-maintained static values instead
-// of fake "live" ones.
+//     fetch() never sees it.
+//   - Bluehost, Namecheap: return HTTP 403 to Cloudflare Worker requests.
+//   - Hosting.com: no confirmed pricing page structure to scrape.
+// Their prices on the site are manually maintained static values.
+//
+// The scraper fails safely: if a page layout changes or a price looks
+// implausible (outside min/max), the bad value is discarded and the static
+// price already written in the HTML stays visible.
 
 const HOSTS = [
   {
     id: "hostinger",
     name: "Hostinger",
     url: "https://www.hostinger.com/pricing",
-    anchor: "Premium",   // text just before the plan's discounted monthly price
-    min: 0.5,
-    max: 50
+    anchor: "Premium", // text just before the plan's discounted monthly price
+    min: 1,
+    max: 6
   },
   {
     id: "dreamhost",
     name: "DreamHost",
     url: "https://www.dreamhost.com/pricing/",
     anchor: "Web Hosting Launch",
-    min: 0.5,
-    max: 50
+    min: 1,
+    max: 6
   }
 ];
 
-// Replace tags with a SPACE (not empty string). This matters: if two
-// adjacent page elements (e.g. a "Save 33%" badge and a price) get joined
-// with no separator, their digits can merge into one bogus number
-// (seen in testing: "$6" + "14.99/mo" -> "$614.99/mo"). A space prevents that.
+// Replace tags with a SPACE (not empty string) so adjacent elements
+// don't merge their digits into one bogus number.
 function stripToText(html) {
   return html
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
@@ -55,36 +44,37 @@ function stripToText(html) {
     .replace(/\s+/g, " ");
 }
 
+// Checks EVERY occurrence of the anchor (the first one may be a menu item),
+// tolerates spaces such as "$ 2.49 /mo", and returns the smallest plausible
+// value (the intro rate is always lower than the renewal rate).
 function extractPrice(text, anchor, min, max) {
-  const idx = text.indexOf(anchor);
-  if (idx === -1) return null;
-  const windowText = text.slice(idx, idx + 800);
-
   const candidates = [];
+  let from = 0;
 
-  // Pattern A: a price already written per month, e.g. "$2.95/mo"
-  for (const m of windowText.matchAll(/\$(\d{1,3}\.\d{2})\s*\/\s*mo/gi)) {
-    candidates.push(parseFloat(m[1]));
+  while (true) {
+    const idx = text.indexOf(anchor, from);
+    if (idx === -1) break;
+    const windowText = text.slice(idx, idx + 800);
+
+    // Pattern A: a price already written per month, e.g. "$2.95/mo"
+    for (const m of windowText.matchAll(/\$\s*(\d{1,3}\.\d{2})\s*\/\s*mo/gi)) {
+      candidates.push(parseFloat(m[1]));
+    }
+
+    // Pattern B: total price + term, e.g. "Get 48 months for $143.52"
+    for (const m of windowText.matchAll(/(\d{1,2})\s*months?\s*for\s*\$\s*(\d{1,4}\.\d{2})/gi)) {
+      const months = parseInt(m[1], 10);
+      if (months > 0) candidates.push(parseFloat(m[2]) / months);
+    }
+
+    from = idx + anchor.length;
   }
 
-  // Pattern B: a total contract price + term length, with no "/mo" figure
-  // at all for the discounted rate — e.g. Hostinger writes
-  // "Get 48 months for $143.52" instead of "$2.99/mo". Compute it ourselves.
-  for (const m of windowText.matchAll(/(\d{1,2})\s*months?\s*for\s*\$(\d{1,4}\.\d{2})/gi)) {
-    const months = parseInt(m[1], 10);
-    const total = parseFloat(m[2]);
-    if (months > 0) candidates.push(total / months);
-  }
-
-  // Multiple patterns can surface both the intro rate and the renewal
-  // rate in the same window — the intro/discounted rate is always the
-  // smaller number, so take the minimum of everything found.
   const values = candidates
     .map((v) => Math.round(v * 100) / 100)
     .filter((v) => !isNaN(v) && v >= min && v <= max);
 
-  if (!values.length) return null;
-  return Math.min(...values);
+  return values.length ? Math.min(...values) : null;
 }
 
 async function refreshHost(host, env) {
@@ -102,22 +92,31 @@ async function refreshHost(host, env) {
     const html = await res.text();
     const text = stripToText(html);
     const price = extractPrice(text, host.anchor, host.min, host.max);
-    if (price === null) throw new Error("price not found, or outside expected $" + host.min + "-$" + host.max + " range");
+    if (price === null) {
+      throw new Error("price not found, or outside expected $" + host.min + "-$" + host.max + " range");
+    }
 
     const record = { id: host.id, name: host.name, price, currency: "USD", asOf: now, ok: true };
     await env.PRICING_KV.put(key, JSON.stringify(record));
     return record;
   } catch (err) {
-    // Keep the last known-good price. Never let a scrape failure blank out
-    // or corrupt what visitors see — just note that today's check failed.
+    // Keep the last known-good price, but ONLY if it is still within the
+    // plausible range. A previously stored bad value (e.g. 10.99) is dropped,
+    // so the static price in the HTML shows instead.
     const existingRaw = await env.PRICING_KV.get(key);
     const existing = existingRaw ? JSON.parse(existingRaw) : null;
+    const existingValid =
+      existing &&
+      typeof existing.price === "number" &&
+      existing.price >= host.min &&
+      existing.price <= host.max;
+
     const failRecord = {
       id: host.id,
       name: host.name,
-      price: existing ? existing.price : null,
+      price: existingValid ? existing.price : null,
       currency: "USD",
-      asOf: existing ? existing.asOf : null,
+      asOf: existingValid ? existing.asOf : null,
       ok: false,
       lastError: String(err),
       lastAttempt: now
@@ -136,7 +135,7 @@ async function handlePricingApi(env) {
   return new Response(JSON.stringify(results), {
     headers: {
       "Content-Type": "application/json",
-      "Cache-Control": "public, max-age=1800" // data only changes once a day; light edge caching is fine
+      "Cache-Control": "public, max-age=1800"
     }
   });
 }
@@ -144,6 +143,21 @@ async function handlePricingApi(env) {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+
+    // Manual refresh for testing. Requires a secret named REFRESH_KEY
+    // (Cloudflare -> Worker -> Settings -> Variables and Secrets).
+    // Usage: /api/refresh?key=YOURSECRET   (delete this block if not needed)
+    if (
+      url.pathname === "/api/refresh" &&
+      env.REFRESH_KEY &&
+      url.searchParams.get("key") === env.REFRESH_KEY
+    ) {
+      const out = [];
+      for (const host of HOSTS) out.push(await refreshHost(host, env));
+      return new Response(JSON.stringify(out, null, 2), {
+        headers: { "Content-Type": "application/json", "Cache-Control": "no-store" }
+      });
+    }
 
     if (url.pathname === "/api/pricing") {
       return handlePricingApi(env);
